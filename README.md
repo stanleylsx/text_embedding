@@ -1,1 +1,8 @@
-# text_embedding
+# Text Embedding
+本项目用于训练基于双塔模型的给LLM召回相关阅读理解文本和进行句子相似度计算的框架
+
+
+## 更新历史
+日期| 版本     |描述
+:---|:-------|---
+2023-10-27| v1.0.0 |提供基于Cosent、SimCSE有监督和SimCSE无监督的句子Embedding训练
