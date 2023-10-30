@@ -14,41 +14,25 @@ import torch
 import json
 
 
-def set_env(configures):
-    random.seed(configures.seed)
-    np.random.seed(configures.seed)
+def set_env(configure):
+    random.seed(configure.seed)
+    np.random.seed(configure.seed)
 
 
-def fold_check(configures):
-    datasets_fold = 'datasets_fold'
-    assert hasattr(configures, datasets_fold), 'item datasets_fold not configured'
+def fold_check(configure):
 
-    if not os.path.exists(configures.datasets_fold):
-        print('datasets fold not found')
-        exit(1)
+    if configure['checkpoints_dir'] == '':
+        raise Exception('checkpoints_dir did not set...')
 
-    checkpoints_dir = 'checkpoints_dir'
-    if not os.path.exists(configures.checkpoints_dir) or not hasattr(configures, checkpoints_dir):
+    if not os.path.exists(configure['checkpoints_dir']):
         print('checkpoints fold not found, creating...')
-        paths = configures.checkpoints_dir.split('/')
-        if len(paths) == 2 and os.path.exists(paths[0]) and not os.path.exists(configures.checkpoints_dir):
-            os.mkdir(configures.checkpoints_dir)
-        else:
-            os.mkdir('checkpoints')
-
-    log_dir = 'log_dir'
-    if not os.path.exists(configures.log_dir):
-        print('log fold not found, creating...')
-        if hasattr(configures, log_dir):
-            os.mkdir(configures.log_dir)
-        else:
-            os.mkdir(configures.datasets_fold + '/vocabs')
+        os.makedirs(configure['checkpoints_dir'])
 
 
 if __name__ == '__main__':
     log_name = './logs/' + mode + '.log'
     logger.add(log_name, encoding='utf-8')
-
+    fold_check(configure)
     if use_cuda:
         if torch.cuda.is_available():
             if cuda_device == -1:
