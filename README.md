@@ -2,7 +2,43 @@
 本项目用于训练基于双塔模型的给LLM召回相关阅读理解文本和进行句子相似度计算的框架
 
 
-## 更新历史
-日期| 版本     |描述
-:---|:-------|---
-2023-10-27| v1.0.0 |提供基于Cosent、SimCSE有监督和SimCSE无监督的句子Embedding训练
+## Updates
+Date| Detail
+:---|---
+2023-10-27|初始仓库
+
+## Requirement
+几个重要环境：
+* python：3.10+  
+* torch：2.0.1+  
+其它环境见requirements.txt  
+
+## Feature
+Method            |Supported| 
+:-----------------|---------|
+Cosent            | ✅     |
+SimCSE-supervise  | ✅     |
+SimCSE-unsupervise| ✅     |
+
+请从config.py文件中的configure里面修改巽离岸的方式：
+```
+configure = {
+    # 训练方式
+    # 支持的训练方式有cosent、simcse_sup、simcse_unsup
+    'train_type': 'cosent'
+}
+```
+
+## Mode  
+项目提供了四种模式，如下：
+Mode              |Detail                           | 
+:-----------------|---------------------------------|
+train             | 训练相似度模型                   |
+get_embedding     | 获取句子的Embedding              |
+predict_one       | 在main.py中写两个句子进行预测测试 |
+convert_onnx      | 将torch模型保存onnx文件以便于部署 |
+
+## Reference
+[MTEB embedding排行榜](https://huggingface.co/spaces/mteb/leaderboard)
+[CoSENT方法](https://kexue.fm/archives/8847)
+[SimCSE损失函数](https://github.com/yangjianxin1/SimCSE)
