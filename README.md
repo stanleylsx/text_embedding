@@ -20,7 +20,7 @@ Cosent            | ✅     |
 SimCSE-supervise  | ✅     |
 SimCSE-unsupervise| ✅     |
 
-请从config.py文件中的configure里面修改巽离岸的方式：
+请从config.py文件中的configure里面修改训练的方式：
 ```
 configure = {
     # 训练方式
