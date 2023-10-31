@@ -40,6 +40,6 @@ predict_one       | 在main.py中写两个句子进行预测测试 |
 convert_onnx      | 将torch模型保存onnx文件以便于部署 |
 
 ## Reference
-[MTEB embedding排行榜](https://huggingface.co/spaces/mteb/leaderboard)
-[CoSENT方法](https://kexue.fm/archives/8847)
-[SimCSE损失函数](https://github.com/yangjianxin1/SimCSE)
+[MTEB embedding排行榜](https://huggingface.co/spaces/mteb/leaderboard)  
+[CoSENT方法](https://kexue.fm/archives/8847)  
+[SimCSE损失函数](https://github.com/yangjianxin1/SimCSE)  
