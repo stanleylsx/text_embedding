@@ -17,6 +17,7 @@ Date| Detail
 
 ### Supported Base Models
 能够支持的一些模型基座：  
+
 Base Model|link
 :---------|--------
 XLMRoberta|[e5](https://huggingface.co/intfloat/multilingual-e5-base)
