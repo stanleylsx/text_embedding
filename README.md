@@ -1,10 +1,17 @@
 # Text Embedding
+![Authour](https://img.shields.io/badge/Author-stanleylsx-red.svg) 
+[![License Apache 2.0](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
+![python_version](https://img.shields.io/badge/Python-3.10%2B-green.svg)
+[![torch_version](https://img.shields.io/badge/torch-2.0%2B-pink.svg)](requirements.txt)  
+
+## Introduction
 本项目用于训练基于双塔模型的给LLM召回相关阅读理解文本和进行句子相似度计算的框架
 
 
 ## Updates
 Date| Detail
 :---|---
+2023-11-01|加入[ewc loss](https://arxiv.org/abs/1612.00796)
 2023-10-27|初始仓库
 
 ## Requirement
