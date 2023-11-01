@@ -94,7 +94,6 @@ def ewc_loss(model, original_weight):
         if p.requires_grad:
             mean = original_weight[n.replace('module.', '')]
             if 'position_embeddings.weight' in n:
-                print(p.shape, mean.shape)
                 losses.append(((p - mean)[:512, :] ** 2).sum())
             else:
                 losses.append(((p - mean) ** 2).sum())

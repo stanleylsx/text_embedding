@@ -146,7 +146,7 @@ class Train:
                     loss = simcse_unsup_loss(out, self.device)
 
                 if configure['use_ewc']:
-                    loss += ewc_loss(model, original_weight)
+                    loss = loss + ewc_loss(model, original_weight)
 
                 loss.backward()
                 loss_sum += loss.item()
