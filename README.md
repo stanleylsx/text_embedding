@@ -64,6 +64,19 @@ get_embedding     | 获取句子的Embedding              |
 predict_one       | 在main.py中写两个句子进行预测测试 |
 convert_onnx      | 将torch模型保存onnx文件以便于部署 |
 
+## Citation
+
+如果你在研究中使用了该项目，请按如下格式引用：
+
+```latex
+@misc{Text Embedding,
+  title={Text Embedding: A tool for training text representations.},
+  author={Shouxian Li},
+  year={2023},
+  howpublished={\url{https://github.com/stanleylsx/text_embedding}},
+}
+```
+
 ## Reference
 [MTEB embedding排行榜](https://huggingface.co/spaces/mteb/leaderboard)  
 [CoSENT方法](https://kexue.fm/archives/8847)  
