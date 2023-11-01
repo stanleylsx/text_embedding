@@ -67,19 +67,15 @@ if __name__ == '__main__':
             logger.info('input:{}'.format(str(sentence)))
             result = predict.get_embedding(sentence)
             logger.info('output:{}'.format(str(result)))
-            print(result)
     elif mode == 'predict_one':
         from engines.predict import Predictor
         logger.info('stage: predict_one')
         predict = Predictor(data_manage, device, logger)
-        a = """
-            怎么使用支付宝
-        """
-        b = """
-            怎么使用微信
-        """
+        a = """怎么使用支付宝"""
+        b = """怎么使用微信"""
         similarity, if_similar = predict.predict_one(a, b)
-        print(similarity, if_similar)
+        text = '\nsentence A:{}\nsentence B:{}\nsimilarity:{}\nif_similar:{}'.format(a, b, similarity, if_similar)
+        logger.info(text)
     elif mode == 'convert_onnx':
         from engines.predict import Predictor
         logger.info('stage: convert_onnx')

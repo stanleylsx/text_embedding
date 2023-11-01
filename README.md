@@ -14,6 +14,23 @@ Date| Detail
 其它环境见requirements.txt  
 
 ## Feature
+
+### Supported Base Models
+能够支持的一些模型基座：  
+Base Model|link
+:---------|--------
+XLMRoberta|[e5](https://huggingface.co/intfloat/multilingual-e5-base)
+Bert      |[bge](https://huggingface.co/BAAI/bge-base-zh-v1.5)、[piccolo](https://huggingface.co/sensenova/piccolo-base-zh)、[simbert](https://huggingface.co/WangZeJun/simbert-base-chinese)、[m3e](https://huggingface.co/moka-ai/m3e-base)  
+
+请从config.py文件中的configure里面修改使用的模型：
+```
+configure = {
+    # 支持的有e5、bge、piccolo、simbert、simbert_v2、m3e
+    'model_type': 'piccolo',
+}
+```
+
+### Train Method
 Method            |Supported| 
 :-----------------|---------|
 Cosent            | ✅     |
