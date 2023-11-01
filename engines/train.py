@@ -196,5 +196,7 @@ class Train:
                 torch.save(optimizer_checkpoint, os.path.join(checkpoints_dir, model_name + '.optimizer'))
                 torch.save(model.state_dict(), os.path.join(checkpoints_dir, model_name))
                 self.logger.info('saved the current model')
-        self.logger.info('overall best f1 is {} at {} epoch'.format(best_f1, best_at_epoch))
+        if val_file != '':
+            self.logger.info('overall best f1 is {} at {} epoch'.format(best_f1, best_at_epoch))
+        self.logger.info('total training time consumption: %.3f(min)' % ((time.time() - very_start_time) / 60))
         self.logger.info('total training time consumption: %.3f(min)' % ((time.time() - very_start_time) / 60))
