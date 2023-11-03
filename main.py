@@ -81,3 +81,8 @@ if __name__ == '__main__':
         logger.info('stage: convert_onnx')
         predict = Predictor(data_manage, device, logger)
         result = predict.convert_onnx()
+    elif mode == 'mteb':
+        from engines.predict import Predictor
+        logger.info('stage: mteb')
+        predict = Predictor(data_manage, device, logger)
+        result = predict.mteb()

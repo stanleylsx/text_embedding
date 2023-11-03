@@ -6,6 +6,8 @@
 # @Software: VSCode
 from config import configure
 from engines.model import Model
+from engines.utils.metrics import MyModel
+from mteb import MTEB
 import torch
 import os
 
@@ -41,8 +43,7 @@ class Predictor:
         """
         获取句向量
         """
-        token_ids = self.data_manage.tokenizer(sentence).input_ids
-        token_ids = torch.tensor([token_ids]).to(self.device)
+        token_ids = self.data_manage.batch_tokenize([sentence]).to(self.device)
         vector = self.model(token_ids)
         vector = vector.detach().cpu().squeeze(0).numpy()
         return vector
@@ -57,3 +58,10 @@ class Predictor:
                           output_names=['vector'],
                           dynamic_axes={'input': {0: 'batch_size', 1: 'max_sequence_length'},
                                         'vector': {0: 'batch_size'}})
+
+    def mteb(self):
+        model = MyModel(self.data_manage, self.model, self.device)
+        task_names = [t.description['name'] for t in MTEB(task_langs=['zh', 'zh-CN']).tasks]
+        # task_names = ['ATEC', 'BQ', 'LCQMC', 'PAWSX', 'STSB']
+        for task in task_names:
+            MTEB(tasks=[task], task_langs=['zh', 'zh-CN']).run(model, output_folder=self.checkpoints_dir)

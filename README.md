@@ -11,6 +11,7 @@
 ## Updates
 Date| Detail
 :---|---
+2023-11-03|增加[mteb](https://github.com/embeddings-benchmark/mteb)评测
 2023-11-01|加入[ewc loss](https://arxiv.org/abs/1612.00796)
 2023-10-27|初始仓库
 

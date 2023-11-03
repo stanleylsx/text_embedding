@@ -94,3 +94,11 @@ class DataPrecess:
         inputs_a, inputs_b, labels = self.prepare_pair_data(df_values)
         dataset = (inputs_a, inputs_b, labels)
         return dataset
+
+    def batch_tokenize(self, sentences):
+        token_ids = self.tokenizer.batch_encode_plus(sentences,
+                                                     max_length=self.max_sequence_length,
+                                                     truncation=True,
+                                                     padding='longest',
+                                                     return_tensors='pt').input_ids
+        return token_ids
