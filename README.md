@@ -23,7 +23,7 @@ Date| Detail
 
 ## Feature
 
-### Supported Base Models
+### Supported Models
 能够支持的一些模型基座：  
 
 Base Model|link
