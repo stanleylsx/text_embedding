@@ -10,6 +10,7 @@
 # get_embedding:              获取句向量
 # predict_one:                预测一句模式
 # convert_onnx:               将torch模型保存onnx文件
+# mteb:                       跑mteb进行测试
 mode = 'train'
 
 # 使用GPU设备
@@ -30,9 +31,9 @@ configure = {
     # 测试数据集
     'test_file': '',
     # 模型保存的文件夹
-    'checkpoints_dir': 'checkpoints',
+    'checkpoints_dir': 'checkpoints/version_first',
     # 模型的名字
-    'model_name': 'debug.bin',
+    'model_name': 'finetune_piccolo-base-zh.bin',
     # 预训练模型细分类
     'hf_tag': 'infgrad/stella-base-zh-v2',
     # 句子的token的最大长度
@@ -40,7 +41,7 @@ configure = {
     # 训练迭代的次数
     'epochs': 4,
     # bs设置
-    'batch_size': 8,
+    'batch_size': 4,
     # 学习率
     'learning_rate': 4e-5,
     # 梯度累计
@@ -52,7 +53,7 @@ configure = {
     # 微调阶段的patient
     'patience': 8,
     # 训练阶段每print_per_batch打印
-    'print_per_batch': 500,
+    'print_per_batch': 100,
     # 训练是否提前结束微调
     'is_early_stop': True,
     # Cosent方法中的超参数lambda
@@ -62,7 +63,9 @@ configure = {
     # 判决相似和不相似的阈值
     'decision_threshold': 0.78,
     # 使用EWC
-    'use_ewc': False,
+    'use_ewc': True,
+    # EWC损失的超参数lambda
+    'ewc_ratio': 10,
     # EWC损失的超参数lambda
     'ewc_ratio': 10,
 }
