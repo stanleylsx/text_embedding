@@ -63,5 +63,6 @@ class Predictor:
         model = MyModel(self.data_manage, self.model, self.device)
         task_names = [t.description['name'] for t in MTEB(task_langs=['zh', 'zh-CN']).tasks]
         # task_names = ['ATEC', 'BQ', 'LCQMC', 'PAWSX', 'STSB']
+        self.logger.info(f'Total tasks: {task_names}')
         for task in task_names:
             MTEB(tasks=[task], task_langs=['zh', 'zh-CN']).run(model, output_folder=self.checkpoints_dir)
