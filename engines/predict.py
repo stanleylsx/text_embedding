@@ -60,6 +60,7 @@ class Predictor:
                                         'vector': {0: 'batch_size'}})
 
     def mteb(self):
+        output_dir = os.path.join(self.checkpoints_dir, 'generic_test')
         model = MyModel(self.data_manage, self.model, self.device)
         match configure['task_class']:
             case 'reranking':
@@ -74,4 +75,4 @@ class Predictor:
                 task_names = ['CovidRetrieval', 'CmedqaRetrieval', 'EcomRetrieval', 'MedicalRetrieval', 'VideoRetrieval']
         self.logger.info(f'Total tasks: {task_names}')
         for task in task_names:
-            MTEB(tasks=[task], task_langs=['zh', 'zh-CN']).run(model, output_folder=self.checkpoints_dir)
+            MTEB(tasks=[task], task_langs=['zh', 'zh-CN']).run(model, output_folder=output_dir)
