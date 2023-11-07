@@ -83,7 +83,7 @@ class Train:
         patience_counter = 0
 
         very_start_time = time.time()
-        self.logger.info('train_data_length:{}\n'.format(len(train_data)))
+        self.logger.info('train_data_length:{}'.format(len(train_data)))
         train_loader = DataLoader(dataset=train_data.values,
                                   collate_fn=self.data_manage.get_dataset,
                                   shuffle=True,
