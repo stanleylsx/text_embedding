@@ -36,6 +36,8 @@ configure = {
     'model_name': 'finetune_piccolo-base-zh.bin',
     # 预训练模型细分类
     'hf_tag': 'infgrad/stella-base-zh-v2',
+    # 使用fp16混合精度训练
+    'use_fp16': True,
     # 句子的token的最大长度
     'max_sequence_length': 1024,
     # 训练迭代的次数
