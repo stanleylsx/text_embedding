@@ -50,7 +50,7 @@ class Predictor:
 
     def convert_onnx(self):
         max_sequence_length = self.data_manage.max_sequence_length
-        dummy_input = torch.ones([1, max_sequence_length]).to('cpu').long()
+        dummy_input = torch.ones([1, max_sequence_length]).to('cpu').int()
         onnx_path = self.checkpoints_dir + '/model.onnx'
         torch.onnx.export(self.model.to('cpu'), dummy_input,
                           f=onnx_path,
@@ -61,8 +61,17 @@ class Predictor:
 
     def mteb(self):
         model = MyModel(self.data_manage, self.model, self.device)
-        task_names = [t.description['name'] for t in MTEB(task_langs=['zh', 'zh-CN']).tasks]
-        # task_names = ['ATEC', 'BQ', 'LCQMC', 'PAWSX', 'STSB']
+        match configure['task_class']:
+            case 'reranking':
+                task_names = ['T2Reranking', 'MMarcoRetrieval', 'CMedQAv1', 'CMedQAv2']
+            case 'pairclassification':
+                task_names = ['Cmnli', 'Ocnli']
+            case 'clustering':
+                task_names = ['CLSClusteringS2S', 'CLSClusteringP2P', 'ThuNewsClusteringS2S', 'ThuNewsClusteringP2P']
+            case 'sts':
+                task_names = ['ATEC', 'BQ', 'LCQMC', 'PAWSX', 'STSB', 'AFQMC', 'QBQTC']
+            case 'retrieval':
+                task_names = ['CovidRetrieval', 'CmedqaRetrieval', 'EcomRetrieval', 'MedicalRetrieval', 'VideoRetrieval']
         self.logger.info(f'Total tasks: {task_names}')
         for task in task_names:
             MTEB(tasks=[task], task_langs=['zh', 'zh-CN']).run(model, output_folder=self.checkpoints_dir)
