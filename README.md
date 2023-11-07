@@ -64,6 +64,7 @@ train             | 训练相似度模型                   |
 get_embedding     | 获取句子的Embedding              |
 predict_one       | 在main.py中写两个句子进行预测测试 |
 convert_onnx      | 将torch模型保存onnx文件以便于部署 |
+mteb              | 支持通过mteb跑通用评估集         |
 
 ## Citation
 
