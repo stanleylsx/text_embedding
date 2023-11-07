@@ -101,7 +101,7 @@ class Train:
 
         total_steps = len(train_loader) * epoch
         num_train_optimization_steps = int(len(train_data) / batch_size / gradient_accumulation_steps) * epoch
-        print('  Num steps = %d' % num_train_optimization_steps)
+        self.logger.info(f'Num steps:{num_train_optimization_steps}')
         model = Model().to(self.device)
         params = list(model.parameters())
         optimizer = AdamW(params, lr=learning_rate)
