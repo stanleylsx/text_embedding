@@ -68,4 +68,7 @@ configure = {
     'ewc_ratio': 10,
     # EWC损失的超参数lambda
     'ewc_ratio': 10,
+    # 使用mteb评测的时候的能力
+    # retrieval、reranking、pairclassification、clustering、sts
+    'task_class': 'sts'
 }
