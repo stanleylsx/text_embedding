@@ -8,6 +8,7 @@ from engines.model import Model
 from transformers.optimization import AdamW, get_linear_schedule_with_warmup
 from tqdm import tqdm
 from torch.utils.data import DataLoader
+from torch.cuda.amp import autocast, GradScaler
 from engines.utils.metrics import cal_metrics, compute_corrcoef
 from engines.utils.losses import cosent_loss, get_mean_params, ewc_loss, simcse_sup_loss, simcse_unsup_loss
 from config import configure
@@ -25,6 +26,7 @@ class Train:
         self.data_manage = data_manage
         self.decision_threshold = data_manage.decision_threshold
         self.train_type = data_manage.train_type
+        self.use_fp16 = configure['use_fp16']
 
     @torch.inference_mode()
     def evaluate(self, model, val_loader):
@@ -103,6 +105,8 @@ class Train:
         model = Model().to(self.device)
         params = list(model.parameters())
         optimizer = AdamW(params, lr=learning_rate)
+        if self.use_fp16:
+            scaler = GradScaler()
 
         if os.path.exists(os.path.join(checkpoints_dir, model_name)):
             self.logger.info('Resuming from checkpoint...')
@@ -133,25 +137,45 @@ class Train:
                 if self.train_type == 'cosent':
                     input_a, input_b, labels = batch
                     input_a, input_b, labels = input_a.to(self.device), input_b.to(self.device), labels.to(self.device)
-                    vectors_a, vectors_b = model(input_a), model(input_b)
-                    pred_sims = torch.cosine_similarity(vectors_a, vectors_b, dim=1)
-                    loss = cosent_loss(pred_sims, labels, self.device)
-                elif self.train_type == 'simcse_sup':
+                    if self.use_fp16:
+                        with autocast():
+                            vectors_a, vectors_b = model(input_a), model(input_b)
+                            pred_sims = torch.cosine_similarity(vectors_a, vectors_b, dim=1)
+                            loss = cosent_loss(pred_sims, labels, self.device)
+                    else:
+                        vectors_a, vectors_b = model(input_a), model(input_b)
+                        pred_sims = torch.cosine_similarity(vectors_a, vectors_b, dim=1)
+                        loss = cosent_loss(pred_sims, labels, self.device)
+                else:
                     batch = batch.to(self.device)
-                    out = model(batch)
-                    loss = simcse_sup_loss(out, self.device)
-                elif self.train_type == 'simcse_unsup':
-                    batch = batch.to(self.device)
-                    out = model(batch)
-                    loss = simcse_unsup_loss(out, self.device)
+                    if self.use_fp16:
+                        with autocast():
+                            out = model(batch)
+                            if self.train_type == 'simcse_sup':
+                                loss = simcse_sup_loss(out, self.device)
+                            elif self.train_type == 'simcse_unsup':
+                                loss = simcse_unsup_loss(out, self.device)
+                    else:
+                        out = model(batch)
+                        if self.train_type == 'simcse_sup':
+                            loss = simcse_sup_loss(out, self.device)
+                        elif self.train_type == 'simcse_unsup':
+                            loss = simcse_unsup_loss(out, self.device)
 
                 if configure['use_ewc']:
                     loss = loss + ewc_loss(model, original_weight)
 
-                loss.backward()
                 loss_sum += loss.item()
+                if self.use_fp16:
+                    scaler.scale(loss).backward()
+                else:
+                    loss.backward()
                 if (step + 1) % gradient_accumulation_steps == 0:
-                    optimizer.step()
+                    if self.use_fp16:
+                        scaler.step(optimizer)
+                        scaler.update()
+                    else:
+                        optimizer.step()
                     scheduler.step()
                     optimizer.zero_grad()
 
