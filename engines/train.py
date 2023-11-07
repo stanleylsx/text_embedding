@@ -93,7 +93,7 @@ class Train:
             val_data = pd.read_csv(val_file, encoding='utf-8')
             if val_data.columns.tolist() != ['sentence1', 'sentence2', 'label']:
                 raise ValueError('val_file format error')
-            self.logger.info('val_data_length:{}\n'.format(len(val_data)))
+            self.logger.info('val_data_length:{}'.format(len(val_data)))
             val_loader = DataLoader(dataset=val_data.values,
                                     collate_fn=self.data_manage.get_eval_dataset,
                                     shuffle=False,
