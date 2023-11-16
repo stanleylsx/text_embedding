@@ -19,16 +19,14 @@ class DataPrecess:
         self.logger = logger
         self.max_sequence_length = configure['max_sequence_length']
         self.decision_threshold = configure['decision_threshold']
-        self.model_type = configure['model_type']
         self.train_type = configure['train_type']
-        if self.model_type == 'e5':
-            self.tokenizer = XLMRobertaTokenizer.from_pretrained(configure['hf_tag'])
-        elif self.model_type == 'simbert_v2':
-            self.tokenizer = RoFormerTokenizer.from_pretrained(configure['hf_tag'])
-        elif self.model_type in ['piccolo', 'bge', 'simbert', 'm3e']:
-            self.tokenizer = BertTokenizer.from_pretrained(configure['hf_tag'])
-        else:
-            raise ValueError('model_type must be in [e5, bge, piccolo, simbert, simbert_v2, m3e]')
+        match configure['model_type']:
+            case 'XLMRoberta':
+                self.tokenizer = XLMRobertaTokenizer.from_pretrained(configure['hf_tag'])
+            case 'RoFormer':
+                self.tokenizer = RoFormerTokenizer.from_pretrained(configure['hf_tag'])
+            case 'Bert':
+                self.tokenizer = BertTokenizer.from_pretrained(configure['hf_tag'])
 
     def prepare_pair_data(self, df_values):
         inputs_a, inputs_b, labels = [], [], []

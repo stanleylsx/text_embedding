@@ -11,7 +11,7 @@
 # predict_one:                预测一句模式
 # convert_onnx:               将torch模型保存onnx文件
 # mteb:                       跑mteb进行测试
-mode = 'train'
+mode = 'predict_one'
 
 # 使用GPU设备
 use_cuda = True
@@ -21,9 +21,10 @@ configure = {
     # 训练方式
     # 支持的训练方式有cosent、simcse_sup、simcse_unsup
     'train_type': 'cosent',
-    # 模型类别
-    # 支持的有e5、bge、piccolo、simbert、simbert_v2、m3e
-    'model_type': 'piccolo',
+    # 模型类别，支持Bert和XLMRoberta
+    'model_type': 'Bert',
+    # 获取Embedding的方法，支持cls、last-avg
+    'emb_type': 'last-avg',
     # 训练数据集
     'train_file': 'datasets/customer_service/customer_service.csv',
     # 验证数据集，必须是pairdata
@@ -31,23 +32,23 @@ configure = {
     # 测试数据集
     'test_file': '',
     # 模型保存的文件夹
-    'checkpoints_dir': 'checkpoints/version_first',
+    'checkpoints_dir': 'checkpoints/piccolo/first_second',
     # 模型的名字
-    'model_name': 'finetune_piccolo-base-zh.bin',
+    'model_name': 'debug.bin',
     # 预训练模型细分类
-    'hf_tag': 'infgrad/stella-base-zh-v2',
+    'hf_tag': 'sensenova/piccolo-base-zh',
     # 使用fp16混合精度训练
     'use_fp16': True,
     # 句子的token的最大长度
-    'max_sequence_length': 1024,
+    'max_sequence_length': 512,
     # 训练迭代的次数
     'epochs': 4,
     # bs设置
-    'batch_size': 4,
+    'batch_size': 2,
     # 学习率
     'learning_rate': 4e-5,
     # 梯度累计
-    'gradient_accumulation_steps': 2,
+    'gradient_accumulation_steps': 4,
     # warmup的步数在所有步数中的前占比
     'warmup_ratio': 0.05,
     # 计算指标的时候的选项
