@@ -34,5 +34,7 @@ class Model(torch.nn.Module):
             vectors = sum_embeddings / sum_mask
         elif self.emb_type == 'cls':
             vectors = model_output.last_hidden_state[:, 0]
+        elif self.emb_type == 'pooler':
+            vectors = model_output.pooler_output
         vectors = torch.nn.functional.normalize(vectors, 2.0, dim=1)
         return vectors
