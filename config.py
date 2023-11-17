@@ -23,7 +23,7 @@ configure = {
     'train_type': 'cosent',
     # 模型类别，支持Bert和XLMRoberta
     'model_type': 'Bert',
-    # 获取Embedding的方法，支持cls、last-avg
+    # 获取Embedding的方法，支持cls、last-avg、pooler
     'emb_type': 'last-avg',
     # 训练数据集
     'train_file': 'datasets/customer_service/customer_service.csv',
