@@ -124,5 +124,5 @@ mode = 'train'
 [MTEB embedding排行榜](https://huggingface.co/spaces/mteb/leaderboard)  
 [CoSENT方法](https://kexue.fm/archives/8847)  
 [SimCSE损失函数](https://github.com/yangjianxin1/SimCSE)  
-[层次分解位置编码，让BERT可以处理超长文本](https://www.spaces.ac.cn/archives/7947)
+[层次分解位置编码，让BERT可以处理超长文本](https://www.spaces.ac.cn/archives/7947)  
 [Overcoming catastrophic forgetting in neural networks](https://arxiv.org/abs/1612.00796)
