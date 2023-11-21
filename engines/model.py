@@ -5,6 +5,7 @@
 # @File : model.py
 # @Software: VSCode
 from transformers import BertModel, XLMRobertaModel, RoFormerModel
+from engines.utils.hierarchical import hierarchical_position
 from config import configure
 import torch
 
@@ -14,14 +15,25 @@ class Model(torch.nn.Module):
         super(Model, self).__init__()
         self.model_type = configure['model_type']
         self.emb_type = configure['emb_type']
+        max_sequence_length = configure['max_sequence_length']
+        config_kwargs = {
+            'max_position_embeddings': max_sequence_length,
+            'ignore_mismatched_sizes': True
+        }
         if self.model_type == 'XLMRoberta':
-            self.model = XLMRobertaModel.from_pretrained(configure['hf_tag'])
+            self.model = XLMRobertaModel.from_pretrained(configure['hf_tag'], **config_kwargs)
         elif self.model_type == 'RoFormer':
-            self.tokenizer = RoFormerModel.from_pretrained(configure['hf_tag'])
+            self.tokenizer = RoFormerModel.from_pretrained(configure['hf_tag'], **config_kwargs)
         elif self.model_type == 'Bert':
-            self.model = BertModel.from_pretrained(configure['hf_tag'])
+            self.model = BertModel.from_pretrained(configure['hf_tag'], **config_kwargs)
         else:
             raise ValueError('model_type must be in [XLMRoberta, RoFormer, Bert]')
+
+        if configure['hierarchical_position']:
+            # 创建分层的position embedding
+            hierarchical_embedding = hierarchical_position(self.model)
+            # 新的position embedding 嵌入到现有的model中
+            self.model.embeddings.position_embeddings = hierarchical_embedding
 
     def forward(self, input_ids):
         attention_mask = torch.where(input_ids > 0, 1, 0)

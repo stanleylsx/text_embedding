@@ -11,7 +11,7 @@
 # predict_one:                预测一句模式
 # convert_onnx:               将torch模型保存onnx文件
 # mteb:                       跑mteb进行测试
-mode = 'predict_one'
+mode = 'train'
 
 # 使用GPU设备
 use_cuda = True
@@ -26,19 +26,19 @@ configure = {
     # 获取Embedding的方法，支持cls、last-avg、pooler
     'emb_type': 'last-avg',
     # 训练数据集
-    'train_file': 'datasets/customer_service/customer_service.csv',
+    'train_file': 'datasets/cosent/train.csv',
     # 验证数据集，必须是pairdata
-    'val_file': '',
+    'val_file': 'datasets/cosent/val.csv',
     # 测试数据集
-    'test_file': '',
+    'test_file': 'datasets/cosent/test.csv',
     # 模型保存的文件夹
-    'checkpoints_dir': 'checkpoints/piccolo/first_second',
+    'checkpoints_dir': 'checkpoints/piccolo/first_version',
     # 模型的名字
     'model_name': 'debug.bin',
-    # 预训练模型细分类
+    # 预训练模型细分类（直接填huggingface上的模型tag）
     'hf_tag': 'sensenova/piccolo-base-zh',
     # 使用fp16混合精度训练
-    'use_fp16': True,
+    'use_fp16': False,
     # 句子的token的最大长度
     'max_sequence_length': 512,
     # 训练迭代的次数
@@ -65,8 +65,12 @@ configure = {
     'simcse_tao': 0.05,
     # 判决相似和不相似的阈值
     'decision_threshold': 0.78,
+    # 使用层次位置编码扩展相对位置编码的长度
+    'hierarchical_position': False,
+    # 使用层次位置编码扩展的默认超参数
+    'hierarchical_alpha': 0.4,
     # 使用EWC
-    'use_ewc': True,
+    'use_ewc': False,
     # EWC损失的超参数lambda
     'ewc_ratio': 10,
     # 使用mteb评测的时候的能力
