@@ -38,7 +38,7 @@ Bert      |[bge](https://huggingface.co/BAAI/bge-base-zh-v1.5)、[piccolo](https
 configure = {
     # 模型类别，支持Bert和XLMRoberta
     'model_type': 'Bert',
-    # 获取Embedding的方法，支持cls、last-avg
+    # 获取Embedding的方法，支持cls、last-avg、pooler
     'emb_type': 'last-avg',
 }
 ```
