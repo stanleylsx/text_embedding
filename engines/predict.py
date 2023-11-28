@@ -72,7 +72,7 @@ class Predictor:
             case 'sts':
                 task_names = ['ATEC', 'BQ', 'LCQMC', 'PAWSX', 'STSB', 'AFQMC', 'QBQTC']
             case 'retrieval':
-                task_names = ['T2Retrieval', 'MMarcoRetrieval', 'DuRetrieval', 'CovidRetrieval', 
+                task_names = ['T2Retrieval', 'MMarcoRetrieval', 'DuRetrieval', 'CovidRetrieval',
                               'CmedqaRetrieval', 'EcomRetrieval', 'MedicalRetrieval', 'VideoRetrieval']
         output_dir = os.path.join(self.checkpoints_dir, 'generic_test/' + task_class)
         self.logger.info(f'Total tasks: {task_names}')
