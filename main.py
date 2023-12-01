@@ -7,6 +7,8 @@
 from loguru import logger
 from engines.data import DataPrecess
 from config import use_cuda, cuda_device, mode, configure
+from engines.train import Train
+from engines.predict import Predictor
 import random
 import numpy as np
 import os
@@ -50,12 +52,10 @@ if __name__ == '__main__':
     logger.info(json.dumps(configure, indent=2, ensure_ascii=False))
     data_manage = DataPrecess(logger)
     if mode == 'train':
-        from engines.train import Train
         logger.info('stage: train')
         trainer = Train(data_manage, device, logger)
         trainer.train()
     elif mode == 'get_embedding':
-        from engines.predict import Predictor
         logger.info('stage: get_embedding')
         predict = Predictor(data_manage, device, logger)
         predict.get_embedding('warm')
@@ -68,7 +68,6 @@ if __name__ == '__main__':
             result = predict.get_embedding(sentence)
             logger.info('output:{}'.format(str(result)))
     elif mode == 'predict_one':
-        from engines.predict import Predictor
         logger.info('stage: predict_one')
         predict = Predictor(data_manage, device, logger)
         a = """怎么使用支付宝"""
@@ -77,12 +76,15 @@ if __name__ == '__main__':
         text = '\nsentence A:{}\nsentence B:{}\nsimilarity:{}\nif_similar:{}'.format(a, b, similarity, if_similar)
         logger.info(text)
     elif mode == 'convert_onnx':
-        from engines.predict import Predictor
         logger.info('stage: convert_onnx')
         predict = Predictor(data_manage, device, logger)
         result = predict.convert_onnx()
     elif mode == 'mteb':
-        from engines.predict import Predictor
         logger.info('stage: mteb')
         predict = Predictor(data_manage, device, logger)
         result = predict.mteb()
+    elif mode == 'test':
+        logger.info('stage: test')
+        trainer = Train(data_manage, device, logger)
+        predict = Predictor(data_manage, device, logger)
+        predict.test(trainer)

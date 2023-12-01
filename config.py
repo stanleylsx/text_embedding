@@ -11,6 +11,7 @@
 # predict_one:                预测一句模式
 # convert_onnx:               将torch模型保存onnx文件
 # mteb:                       跑mteb进行测试
+# test:                       目前只支持跑相关性测试
 mode = 'train'
 
 # 使用GPU设备

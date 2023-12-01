@@ -7,7 +7,9 @@
 from config import configure
 from engines.model import Model
 from engines.utils.metrics import MyModel
+from torch.utils.data import DataLoader
 from mteb import MTEB
+import pandas as pd
 import torch
 import os
 
@@ -78,3 +80,17 @@ class Predictor:
         self.logger.info(f'Total tasks: {task_names}')
         for task in task_names:
             MTEB(tasks=[task], task_langs=['zh', 'zh-CN']).run(model, output_folder=output_dir)
+
+    def test(self, trainer):
+        test_file = configure['test_file']
+        batch_size = configure['batch_size']
+        if test_file != '':
+            test_data = pd.read_csv(test_file, encoding='utf-8')
+            if test_data.columns.tolist() != ['sentence1', 'sentence2', 'label']:
+                raise ValueError('test_file format error')
+            self.logger.info('test_data_length:{}'.format(len(test_data)))
+            test_loader = DataLoader(dataset=test_data.values,
+                                     collate_fn=self.data_manage.get_eval_dataset,
+                                     shuffle=False,
+                                     batch_size=batch_size)
+            trainer.evaluate(self.model, test_loader)
