@@ -88,3 +88,8 @@ if __name__ == '__main__':
         trainer = Train(data_manage, device, logger)
         predict = Predictor(data_manage, device, logger)
         predict.test(trainer)
+    elif mode == 'batch_test':
+        # 批量转embedding
+        logger.info('stage: batch_test')
+        predict = Predictor(data_manage, device, logger)
+        predict.batch_embedding()

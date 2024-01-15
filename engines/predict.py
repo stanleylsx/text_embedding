@@ -94,3 +94,20 @@ class Predictor:
                                      shuffle=False,
                                      batch_size=batch_size)
             trainer.evaluate(self.model, test_loader)
+
+    def batch_embedding(self):
+        test_file = configure['test_file']
+        if test_file != '':
+            indices = []
+            vectors = []
+            sentences = []
+            test_data = pd.read_csv(test_file, encoding='utf-8')
+            for _, row in test_data.iterrows():
+                index = row['index']
+                indices.append(index)
+                sentence = row['sentence']
+                sentences.append(sentence)
+                vector = self.get_embedding(sentence)
+                vectors.append(vector.tolist())
+        test_result = pd.DataFrame({'index': indices, 'sentence': sentences, 'vector': vectors})
+        test_result.to_csv('batch_test_result.csv', index=False)
