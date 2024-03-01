@@ -36,7 +36,10 @@ class Model(torch.nn.Module):
             self.model.embeddings.position_embeddings = hierarchical_embedding
 
     def forward(self, input_ids):
-        attention_mask = torch.where(input_ids > 0, 1, 0)
+        if self.model_type == 'XLMRoberta':
+            attention_mask = torch.where(input_ids != 1, 1, 0)
+        elif self.model_type == 'Bert':
+            attention_mask = torch.where(input_ids > 0, 1, 0)
         model_output = self.model(input_ids, attention_mask=attention_mask)
         if self.emb_type == 'last-avg':
             token_embeddings = model_output[0]
