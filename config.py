@@ -40,8 +40,8 @@ configure = {
     'hf_tag': 'sensenova/piccolo-base-zh',
     # 使用fp16混合精度训练
     'use_fp16': False,
-    # 句子的token的最大长度
-    'max_sequence_length': 512,
+    # 句子的token的最大长度，请注意在你不需要扩展长度的时候需要和你用到的模型的config.json文件里面的max_position_embeddings保持一致
+    'max_position_embeddings': 512,
     # 训练迭代的次数
     'epochs': 4,
     # bs设置
@@ -76,5 +76,5 @@ configure = {
     'ewc_ratio': 10,
     # 使用mteb评测的时候的能力
     # retrieval、reranking、pairclassification、clustering、sts
-    'task_class': 'sts'
+    'task_class': 'retrieval'
 }

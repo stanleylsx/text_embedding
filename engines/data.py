@@ -17,7 +17,7 @@ class DataPrecess:
     def __init__(self, logger):
         super(DataPrecess, self).__init__()
         self.logger = logger
-        self.max_sequence_length = configure['max_sequence_length']
+        self.max_position_embeddings = configure['max_position_embeddings']
         self.decision_threshold = configure['decision_threshold']
         self.train_type = configure['train_type']
         match configure['model_type']:
@@ -37,12 +37,12 @@ class DataPrecess:
         inputs_a = self.tokenizer.batch_encode_plus(inputs_a,
                                                     padding='longest',
                                                     truncation=True,
-                                                    max_length=self.max_sequence_length,
+                                                    max_length=self.max_position_embeddings,
                                                     return_tensors='pt')
         inputs_b = self.tokenizer.batch_encode_plus(inputs_b,
                                                     padding='longest',
                                                     truncation=True,
-                                                    max_length=self.max_sequence_length,
+                                                    max_length=self.max_position_embeddings,
                                                     return_tensors='pt')
         token_ids_a, token_ids_b = inputs_a['input_ids'], inputs_b['input_ids']
         return token_ids_a, token_ids_b, torch.tensor(labels)
@@ -52,7 +52,7 @@ class DataPrecess:
         for sentence, entailment, contradiction in df_values:
             triple_sentences.extend([sentence, entailment, contradiction])
         inputs = self.tokenizer.batch_encode_plus(triple_sentences,
-                                                  max_length=self.max_sequence_length,
+                                                  max_length=self.max_position_embeddings,
                                                   truncation=True,
                                                   padding='longest',
                                                   return_tensors='pt')
@@ -65,7 +65,7 @@ class DataPrecess:
             sentence = sentence[0]
             sentences.extend([sentence, sentence])
         inputs = self.tokenizer.batch_encode_plus(sentences,
-                                                  max_length=self.max_sequence_length,
+                                                  max_length=self.max_position_embeddings,
                                                   truncation=True,
                                                   padding='longest',
                                                   return_tensors='pt')
@@ -95,7 +95,7 @@ class DataPrecess:
 
     def batch_tokenize(self, sentences):
         token_ids = self.tokenizer.batch_encode_plus(sentences,
-                                                     max_length=self.max_sequence_length,
+                                                     max_length=self.max_position_embeddings,
                                                      truncation=True,
                                                      padding='longest',
                                                      return_tensors='pt').input_ids

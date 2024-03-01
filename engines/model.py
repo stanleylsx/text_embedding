@@ -15,9 +15,9 @@ class Model(torch.nn.Module):
         super(Model, self).__init__()
         self.model_type = configure['model_type']
         self.emb_type = configure['emb_type']
-        max_sequence_length = configure['max_sequence_length']
+        max_position_embeddings = configure['max_position_embeddings']
         config_kwargs = {
-            'max_position_embeddings': max_sequence_length,
+            'max_position_embeddings': max_position_embeddings,
             'ignore_mismatched_sizes': True
         }
         if self.model_type == 'XLMRoberta':

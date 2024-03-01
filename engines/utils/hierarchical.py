@@ -39,11 +39,11 @@ def hierarchical_position(model):
     """
     通过bert预训练权重创建BertHierarchicalPositionEmbedding并返回
     """
-    max_sequence_length = configure['max_sequence_length']
+    max_position_embeddings = configure['max_position_embeddings']
     # 加载bert预训练文件中的position embedding的weight
     embedding_weight = model.embeddings.position_embeddings.weight
     # 先创建一个分层的embedding
-    hierarchical_position = BertHierarchicalPositionEmbedding(num_embeddings=max_sequence_length)
+    hierarchical_position = BertHierarchicalPositionEmbedding(num_embeddings=max_position_embeddings)
     # 把已经训练好的embedding替换创建的embedding
     hierarchical_position.weight.data.copy_(embedding_weight)
     # 不参与模型训练

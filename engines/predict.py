@@ -51,14 +51,14 @@ class Predictor:
         return vector
 
     def convert_onnx(self):
-        max_sequence_length = self.data_manage.max_sequence_length
-        dummy_input = torch.ones([1, max_sequence_length]).to('cpu').int()
+        max_position_embeddings = self.data_manage.max_position_embeddings
+        dummy_input = torch.ones([1, max_position_embeddings]).to('cpu').int()
         onnx_path = self.checkpoints_dir + '/model.onnx'
         torch.onnx.export(self.model.to('cpu'), dummy_input,
                           f=onnx_path,
                           input_names=['input'],
                           output_names=['vector'],
-                          dynamic_axes={'input': {0: 'batch_size', 1: 'max_sequence_length'},
+                          dynamic_axes={'input': {0: 'batch_size', 1: 'max_position_embeddings'},
                                         'vector': {0: 'batch_size'}})
 
     def mteb(self):

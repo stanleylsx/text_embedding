@@ -70,8 +70,8 @@ if __name__ == '__main__':
     elif mode == 'predict_one':
         logger.info('stage: predict_one')
         predict = Predictor(data_manage, device, logger)
-        a = """怎么使用支付宝"""
-        b = """怎么使用微信"""
+        a = """冬天好冷"""
+        b = """这个冬天真的好冷啊，你准备在哪里过年"""
         similarity, if_similar = predict.predict_one(a, b)
         text = '\nsentence A:{}\nsentence B:{}\nsimilarity:{}\nif_similar:{}'.format(a, b, similarity, if_similar)
         logger.info(text)
