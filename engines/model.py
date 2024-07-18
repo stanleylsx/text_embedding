@@ -43,7 +43,7 @@ class Model(torch.nn.Module):
         model_output = self.model(input_ids, attention_mask=attention_mask)
         if self.emb_type == 'last-avg':
             token_embeddings = model_output[0]
-            input_mask_expanded = attention_mask.unsqueeze(-1).expand(token_embeddings.size()).float()
+            input_mask_expanded = attention_mask.unsqueeze(-1).expand(token_embeddings.size()).to(token_embeddings.dtype)
             sum_embeddings = torch.sum(token_embeddings * input_mask_expanded, 1)
             sum_mask = torch.clamp(input_mask_expanded.sum(1), min=1e-9)
             vectors = sum_embeddings / sum_mask
