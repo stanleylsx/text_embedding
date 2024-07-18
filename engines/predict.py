@@ -56,7 +56,8 @@ class Predictor:
         onnx_path = self.checkpoints_dir + '/model.onnx'
         torch.onnx.export(self.model, dummy_input,
                           f=onnx_path,
-                          opset_version=11,
+                          opset_version=17,
+                          do_constant_folding=True,
                           input_names=['input'],
                           output_names=['vector'],
                           dynamic_axes={'input': {0: 'batch_size', 1: 'max_position_embeddings'},
