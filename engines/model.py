@@ -4,7 +4,7 @@
 # @Email : gzlishouxian@gmail.com
 # @File : model.py
 # @Software: VSCode
-from transformers import BertModel, XLMRobertaModel, RoFormerModel
+from transformers import AutoModel, BertModel, XLMRobertaModel, RoFormerModel
 from engines.utils.hierarchical import hierarchical_position
 from config import configure
 import torch
@@ -26,6 +26,8 @@ class Model(torch.nn.Module):
             self.tokenizer = RoFormerModel.from_pretrained(configure['hf_tag'], **config_kwargs)
         elif self.model_type == 'Bert':
             self.model = BertModel.from_pretrained(configure['hf_tag'], **config_kwargs)
+        elif self.model_type == 'GTE':
+            self.model = AutoModel.from_pretrained(configure['hf_tag'], trust_remote_code=True)
         else:
             raise ValueError('model_type must be in [XLMRoberta, RoFormer, Bert]')
 
@@ -40,6 +42,8 @@ class Model(torch.nn.Module):
             attention_mask = torch.where(input_ids != 1, 1, 0)
         elif self.model_type == 'Bert':
             attention_mask = torch.where(input_ids > 0, 1, 0)
+        elif self.model_type == 'GTE':
+            attention_mask = torch.where(input_ids != 1, 1, 0)
         model_output = self.model(input_ids, attention_mask=attention_mask)
         if self.emb_type == 'last-avg':
             token_embeddings = model_output[0]

@@ -4,7 +4,7 @@
 # @Email : gzlishouxian@gmail.com
 # @File : data.py
 # @Software: VSCode
-from transformers import XLMRobertaTokenizer, BertTokenizer, RoFormerTokenizer
+from transformers import AutoTokenizer, XLMRobertaTokenizer, BertTokenizer, RoFormerTokenizer
 from config import configure
 import torch
 
@@ -27,6 +27,8 @@ class DataPrecess:
                 self.tokenizer = RoFormerTokenizer.from_pretrained(configure['hf_tag'])
             case 'Bert':
                 self.tokenizer = BertTokenizer.from_pretrained(configure['hf_tag'])
+            case 'GTE':
+                self.tokenizer = AutoTokenizer.from_pretrained(configure['hf_tag'])
 
     def prepare_pair_data(self, df_values):
         inputs_a, inputs_b, labels = [], [], []
