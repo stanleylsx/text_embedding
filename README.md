@@ -32,11 +32,12 @@ Base Model|link
 :---------|--------
 XLMRoberta|[e5](https://huggingface.co/intfloat/multilingual-e5-base)
 Bert      |[bge](https://huggingface.co/BAAI/bge-base-zh-v1.5)、[piccolo](https://huggingface.co/sensenova/piccolo-base-zh)、[simbert](https://huggingface.co/WangZeJun/simbert-base-chinese)、[m3e](https://huggingface.co/moka-ai/m3e-base)、[gte](https://huggingface.co/thenlper/gte-base-zh)
+GTE       |[gte](https://huggingface.co/Alibaba-NLP/gte-multilingual-base)
 
 请从config.py文件中的configure里面修改使用的模型和获取embedding的方式：
 ```
 configure = {
-    # 模型类别，支持Bert和XLMRoberta
+    # 模型类别，支持Bert和XLMRoberta、GTE
     'model_type': 'Bert',
     # 获取Embedding的方法，支持cls、last-avg、pooler
     'emb_type': 'last-avg',
