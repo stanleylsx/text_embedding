@@ -22,7 +22,7 @@ configure = {
     # 训练方式
     # 支持的训练方式有cosent、simcse_sup、simcse_unsup
     'train_type': 'cosent',
-    # 模型类别，支持Bert和XLMRoberta
+    # 模型类别，支持Bert、XLMRoberta、GTE
     'model_type': 'Bert',
     # 获取Embedding的方法，支持cls、last-avg、pooler
     'emb_type': 'last-avg',
