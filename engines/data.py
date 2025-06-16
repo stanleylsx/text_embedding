@@ -20,15 +20,14 @@ class DataPrecess:
         self.max_position_embeddings = configure['max_position_embeddings']
         self.decision_threshold = configure['decision_threshold']
         self.train_type = configure['train_type']
-        match configure['model_type']:
-            case 'XLMRoberta':
-                self.tokenizer = XLMRobertaTokenizer.from_pretrained(configure['hf_tag'])
-            case 'RoFormer':
-                self.tokenizer = RoFormerTokenizer.from_pretrained(configure['hf_tag'])
-            case 'Bert':
-                self.tokenizer = BertTokenizer.from_pretrained(configure['hf_tag'])
-            case 'GTE':
-                self.tokenizer = AutoTokenizer.from_pretrained(configure['hf_tag'])
+        if configure['model_type'] == 'XLMRoberta':
+            self.tokenizer = XLMRobertaTokenizer.from_pretrained(configure['hf_tag'])
+        elif configure['model_type'] == 'RoFormer':
+            self.tokenizer = RoFormerTokenizer.from_pretrained(configure['hf_tag'])
+        elif configure['model_type'] == 'Bert':
+            self.tokenizer = BertTokenizer.from_pretrained(configure['hf_tag'])
+        elif configure['model_type'] == 'GTE':
+            self.tokenizer = AutoTokenizer.from_pretrained(configure['hf_tag'])
 
     def prepare_pair_data(self, df_values):
         inputs_a, inputs_b, labels = [], [], []
