@@ -66,18 +66,17 @@ class Predictor:
     def mteb(self):
         model = MyModel(self.data_manage, self.model, self.device)
         task_class = configure['task_class']
-        match task_class:
-            case 'reranking':
-                task_names = ['T2Reranking', 'MMarcoRetrieval', 'CMedQAv1', 'CMedQAv2']
-            case 'pairclassification':
-                task_names = ['Cmnli', 'Ocnli']
-            case 'clustering':
-                task_names = ['CLSClusteringS2S', 'CLSClusteringP2P', 'ThuNewsClusteringS2S', 'ThuNewsClusteringP2P']
-            case 'sts':
-                task_names = ['ATEC', 'BQ', 'LCQMC', 'PAWSX', 'STSB', 'AFQMC', 'QBQTC']
-            case 'retrieval':
-                task_names = ['T2Retrieval', 'MMarcoRetrieval', 'DuRetrieval', 'CovidRetrieval',
-                              'CmedqaRetrieval', 'EcomRetrieval', 'MedicalRetrieval', 'VideoRetrieval']
+        if task_class == 'reranking':
+            task_names = ['T2Reranking', 'MMarcoRetrieval', 'CMedQAv1', 'CMedQAv2']
+        elif task_class == 'pairclassification':
+            task_names = ['Cmnli', 'Ocnli']
+        elif task_class == 'clustering':
+            task_names = ['CLSClusteringS2S', 'CLSClusteringP2P', 'ThuNewsClusteringS2S', 'ThuNewsClusteringP2P']
+        elif task_class == 'sts':
+            task_names = ['ATEC', 'BQ', 'LCQMC', 'PAWSX', 'STSB', 'AFQMC', 'QBQTC']
+        elif task_class == 'retrieval':
+            task_names = ['T2Retrieval', 'MMarcoRetrieval', 'DuRetrieval', 'CovidRetrieval', 
+                          'CmedqaRetrieval', 'EcomRetrieval', 'MedicalRetrieval', 'VideoRetrieval']
         output_dir = os.path.join(self.checkpoints_dir, 'generic_test/' + task_class)
         self.logger.info(f'Total tasks: {task_names}')
         for task in task_names:
