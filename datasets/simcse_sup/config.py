@@ -21,13 +21,13 @@ cuda_device = 2
 configure = {
     # 训练方式
     # 支持的训练方式有cosent、simcse_sup、simcse_unsup
-    'train_type': 'simcse_unsup',
+    'train_type': 'simcse_sup',
     # 模型类别，支持Bert、XLMRoberta、GTE
     'model_type': 'GTE',
     # 获取Embedding的方法，支持cls、last-avg、pooler
     'emb_type': 'last-avg',
     # 训练数据集
-    'train_file': 'datasets/simcse_unsup/stsb_unsup_train_data.csv',
+    'train_file': 'datasets/simcse_sup/cmnli_sup_train_data.csv',
     # 验证数据集，必须是pairdata
     'val_file': '',
     # 测试数据集

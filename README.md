@@ -45,11 +45,13 @@ configure = {
 ```
 
 ### Train Method
-Method            |Supported| 
-:-----------------|---------|
-Cosent            | ✅     |
-SimCSE-supervise  | ✅     |
-SimCSE-unsupervise| ✅     |
+Method                       |Supported| 
+:----------------------------|---------|
+Cosent                       | ✅     |
+SimCSE-supervise（infoNCE）  | ✅     |
+SimCSE-unsupervise           | ✅     |
+
+* 目前infoNCE只支持一个负例，如果需要多个负例需要进行改造。
 
 请从config.py文件中的configure里面修改训练的方式：
 ```

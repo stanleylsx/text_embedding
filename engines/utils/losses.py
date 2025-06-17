@@ -27,51 +27,41 @@ def cosent_loss(output, y_true, device):
     return torch.logsumexp(y_pred, dim=0)
 
 
-def simcse_sup_loss(y_pred, device):
+def simcse_sup_loss(y_pred):
     """
-    有监督simcse损失函数
+    有监督SimCSE损失函数
     """
-    # [12, 768]
-    simcse_tao = configure['simcse_tao']
-    # [12, 12]
-    similarities = torch.cosine_similarity(y_pred.unsqueeze(0), y_pred.unsqueeze(1), dim=2)
-    #  0,  3,  6,  9
-    row = torch.arange(0, y_pred.shape[0], 3)
-    #  0 ~ 11
-    col = torch.arange(0, y_pred.shape[0])
-    #  1,  2,  4,  5,  7,  8, 10, 11
-    col = col[col % 3 != 0]
-    # [4, 12]
-    similarities = similarities[row, :]
-    # [4, 8]
-    similarities = similarities[:, col]
-    # [4, 8]
-    similarities = similarities / simcse_tao
-    #  0,  2,  4,  6
-    y_true = torch.arange(0, len(col), 2, device=device)
-    loss = torch.nn.functional.cross_entropy(similarities, y_true)
+    device = y_pred.device
+    temperature = configure['simcse_tao']
+    assert y_pred.shape[0] % 3 == 0, "Batch size must be divisible by 3 (anchor, positive, negative)"
+    batch_size = y_pred.shape[0] // 3
+    anchors = y_pred[0::3]
+    positives = y_pred[1::3]
+    negatives = y_pred[2::3]
+    # 拼接 positives 和 negatives 作为候选
+    candidates = torch.cat([positives, negatives], dim=0)  # [2*batch_size, hidden_size]
+    # 计算余弦相似度: anchors × candidates.T
+    similarities = torch.matmul(anchors, candidates.T)  # [batch_size, 2*batch_size]
+    # 相似度缩放
+    similarities = similarities / temperature
+    # 构造标签，正样本在 candidates 中排在前 batch_size 个位置
+    labels = torch.arange(batch_size, device=device)
+    loss = torch.nn.functional.cross_entropy(similarities, labels)
     return loss
 
 
-def simcse_unsup_loss(y_pred, device):
-    """无监督的损失函数
-    y_pred (tensor): bert的输出, [batch_size * 2, 768]
-
+def simcse_unsup_loss(features):
     """
-    simcse_tao = configure['simcse_tao']
-    # 得到y_pred对应的label, [1, 0, 3, 2, ..., batch_size-1, batch_size-2]
-    y_true = torch.arange(y_pred.shape[0], device=device)
+    无监督SimCSE损失函数
+    """
+    device = features.device
+    temperature = configure['simcse_tao']
+    y_true = torch.arange(0, features.shape[0], device=device)
     y_true = (y_true - y_true % 2 * 2) + 1
-    # batch内两两计算相似度, 得到相似度矩阵(对角矩阵)
-    sim = torch.cosine_similarity(y_pred.unsqueeze(1), y_pred.unsqueeze(0), dim=-1)
-    # 将相似度矩阵对角线置为很小的值, 消除自身的影响
-    sim = sim - torch.eye(y_pred.shape[0], device=device) * 1e12
-    # 相似度矩阵除以温度系数
-    sim = sim / simcse_tao
-    # 计算相似度矩阵与y_true的交叉熵损失
-    # 计算交叉熵，每个case都会计算与其他case的相似度得分，得到一个得分向量，目的是使得该得分向量中正样本的得分最高，负样本的得分最低
-    loss = torch.nn.functional.cross_entropy(sim, y_true)
-    loss = torch.mean(loss)
+    similarities = torch.matmul(features, features.T)  # cosine sim
+    similarities = similarities - torch.eye(features.shape[0], device=device) * 1e12
+    similarities = similarities / temperature
+    loss = torch.nn.functional.cross_entropy(similarities, y_true)
     return loss
 
 

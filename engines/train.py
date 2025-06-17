@@ -152,16 +152,15 @@ class Train:
                         with autocast():
                             out = model(batch)
                             if self.train_type == 'simcse_sup':
-                                loss = simcse_sup_loss(out, self.device)
+                                loss = simcse_sup_loss(out)
                             elif self.train_type == 'simcse_unsup':
-                                loss = simcse_unsup_loss(out, self.device)
+                                loss = simcse_unsup_loss(out)
                     else:
                         out = model(batch)
                         if self.train_type == 'simcse_sup':
-                            loss = simcse_sup_loss(out, self.device)
+                            loss = simcse_sup_loss(out)
                         elif self.train_type == 'simcse_unsup':
-                            loss = simcse_unsup_loss(out, self.device)
-
+                            loss = simcse_unsup_loss(out)
                 if configure['use_ewc']:
                     loss = loss + ewc_loss(model, original_weight)
 
